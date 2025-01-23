@@ -11,8 +11,8 @@ type Props = NativeStackScreenProps<RootStackParamList, 'gameScreen'>;
 
 const GameScreen = () => {
   return (
-    <View>
-      <Text>Comienza el juego</Text>
+    <View style={styles.container}>
+      <Text style= {styles.text}>Comienza el juego</Text>
     </View>
   )
 }
@@ -29,6 +29,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFFFFF'
   },
 })

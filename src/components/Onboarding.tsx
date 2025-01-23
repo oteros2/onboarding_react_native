@@ -2,8 +2,15 @@ import React, { useRef, useState } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { itemData, onboardingData } from "../pages/pages";
 import { Button, PaperProvider } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const { width } = Dimensions.get('window');
+
+type RootStackParamList = {
+  onboarding: undefined;
+  gameScreen: undefined;
+};
 
 const renderItem = ({ item }: { item: itemData }) => (
   <View style={styles.page}>
@@ -13,15 +20,17 @@ const renderItem = ({ item }: { item: itemData }) => (
 );
 
 const Onboarding = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const flatListRef = useRef<FlatList>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const next = () => {
-    if (currentIndex === onboardingData.length - 1) {
-      return;
+    if (currentIndex < onboardingData.length - 1) {
+      flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      navigation.navigate('gameScreen');
     }
-    flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
-    setCurrentIndex(currentIndex + 1);
   };
 
   const back = () => {
