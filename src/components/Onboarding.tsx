@@ -52,6 +52,13 @@ const Onboarding = () => {
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={true}
+          onScroll={(event) => {
+            if (currentIndex < event.nativeEvent.contentOffset.x / width) {
+              setCurrentIndex(currentIndex + 1);
+            } else {
+              setCurrentIndex(currentIndex - 1);
+            }
+          }}
         />
       </View>
       <View style={styles.buttonContainer}>
