@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { itemData, onboardingData } from "../pages/pages";
 import { Button, PaperProvider } from "react-native-paper";
@@ -13,32 +13,52 @@ const renderItem = ({ item }: { item: itemData }) => (
 );
 
 const Onboarding = () => {
+  const flatListRef = useRef<FlatList>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const next = () => {
+    if (currentIndex === onboardingData.length - 1) {
+      return;
+    }
+    flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
+    setCurrentIndex(currentIndex + 1);
+  };
+
+  const back = () => {
+    if (currentIndex === 0) {
+      return;
+    }
+    flatListRef.current?.scrollToIndex({ index: currentIndex - 1 });
+    setCurrentIndex(currentIndex - 1);
+  };
+
   return (
     <PaperProvider>
-    <View style={styles.container}>
-      <FlatList
-        data={onboardingData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.key}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={true}
-      />
-    </View>
+      <View style={styles.container}>
+        <FlatList
+          ref={flatListRef}
+          data={onboardingData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.key}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={true}
+        />
+      </View>
       <View style={styles.buttonContainer}>
-            <Button style={styles.button}
-              labelStyle={styles.buttonText}
-              mode="elevated" 
-              onPress={() => console.log('Pressed')}>
-              Back
-            </Button>
-            <Button style={styles.button}
-              mode="elevated" 
-              labelStyle={styles.buttonText}
-              onPress={() => console.log('Pressed')}>
-              Next
-            </Button>
-          </View>
+        <Button style={styles.button}
+          labelStyle={styles.buttonText}
+          mode="elevated"
+          onPress={back}>
+          Back
+        </Button>
+        <Button style={styles.button}
+          mode="elevated"
+          labelStyle={styles.buttonText}
+          onPress={next}>
+          Next
+        </Button>
+      </View>
     </PaperProvider>
   );
 };
