@@ -3,7 +3,7 @@ import Onboarding from "./components/Onboarding";
 
 const App = () => {
   return (
-      <Onboarding />
+    <Onboarding />
   );
 };
 
